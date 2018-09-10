@@ -1,0 +1,15 @@
+---
+
+openntpd_pkgs_list:
+  - openntpd
+
+openntpd_ntpd_to_remove:
+  - name: ntp
+    packages:
+      - name: ntp
+
+openntpd_conf_dir: /etc/openntpd
+openntpd_user: ntpd
+openntpd_group: ntpd
+openntpd_service_name: openntpd
+openntpd_bin_name: ntpd

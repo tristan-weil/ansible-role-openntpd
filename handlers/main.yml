@@ -1,0 +1,7 @@
+---
+
+- name: openntpd restart
+  listen: network restart
+  service:
+    name: "{{ openntpd_service_name }}"
+    state: restarted

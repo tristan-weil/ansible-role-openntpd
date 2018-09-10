@@ -1,0 +1,12 @@
+---
+
+- name: install the openntpd config file
+  template:
+    src: etc/openntpd/ntpd.conf.j2
+    dest: "{{ openntpd_conf_dir }}/ntpd.conf"
+    owner: root
+    group: root
+    mode: "0644"
+    validate: "{{ openntpd_bin_name }} -f %s -n"
+  notify:
+    - openntpd restart
