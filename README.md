@@ -15,8 +15,8 @@ For more information, see http://www.openntpd.org/manual.html
 
 ## Dependencies
 
-t18s.fr_pkg
-t18s.fr_firewall_config
+- t18s.fr_pkg
+- t18s.fr_firewall_config
 
 ## Example Playbook
 
