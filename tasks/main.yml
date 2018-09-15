@@ -7,12 +7,12 @@
 - import_tasks: pkg.yml
   when: ansible_os_family != 'OpenBSD'
 
-- import_tasks: fw.yml
-
 - import_tasks: config.yml
+
+- meta: flush_handlers
 
 - import_tasks: service.yml
 
-- meta: flush_handlers
+- import_tasks: fw.yml
 
 - import_tasks: remove_other_ntpd.yml
