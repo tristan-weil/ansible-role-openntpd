@@ -1,6 +1,6 @@
 ---
 
-openntpd_pkgs_list: []
+openntpd_pkgs: []
 
 openntpd_conf_dir: /etc
 openntpd_user: _ntpd

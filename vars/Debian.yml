@@ -1,6 +1,6 @@
 ---
 
-openntpd_pkgs_list:
+openntpd_pkgs:
   - openntpd
 
 openntpd_ntpd_to_remove:
