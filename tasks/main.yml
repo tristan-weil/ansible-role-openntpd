@@ -1,11 +1,11 @@
 ---
 
 - name: load os specific vars
-  include_vars: "{{ ansible_distribution }}.yml"
+  include_vars: "{{ ansible_facts['distribution'] }}.yml"
   tags: always
 
 - import_tasks: pkg.yml
-  when: ansible_os_family != 'OpenBSD'
+  when: ansible_facts['os_family'] != 'OpenBSD'
 
 - import_tasks: config.yml
 
