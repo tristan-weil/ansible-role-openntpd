@@ -1,20 +1,17 @@
 ---
 
-- name: check for other mailers
-  command: "systemctl status {{ item.name }}"
-  register: __openntpd_to_remove_check_result
-  ignore_errors: True
-  changed_when: False
-  loop: "{{ openntpd_ntpd_to_remove }}"
+- name: gather data about services
+  service_facts:
 
 - name: disable mailer services
   service:
     name: "{{ item.item.name }}"
     state: stopped
-    enabled: no
+    enabled: False
   when: >
     item.rc == 0
-  loop: "{{ __openntpd_to_remove_check_result.results | default([]) }}"
+    and ansible_facts['services'][item + '.service'] is defined
+  loop: "{{ openntpd_ntpd_to_remove }}"
 
 - name: mask mailer services
   systemd:
@@ -23,7 +20,8 @@
   when: >
     item.rc == 0
     and ansible_facts['service_mgr'] == 'systemd'
-  loop: "{{ __openntpd_to_remove_check_result.results | default([]) }}"
+    and ansible_facts['services'][item + '.service'] is defined
+  loop: "{{ openntpd_ntpd_to_remove }}"
 
 - include_role:
     name: t18s.fr_pkg
