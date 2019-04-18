@@ -1,9 +1,0 @@
----
-
-openntpd_pkgs: []
-
-openntpd_conf_dir: /etc
-openntpd_user: _ntpd
-openntpd_group: _ntpd
-openntpd_service_name: ntpd
-openntpd_bin_name: ntpd

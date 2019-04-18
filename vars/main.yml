@@ -1,0 +1,41 @@
+---
+
+openntpd_pkgs: "{{ __openntpd_pkgs_by_distribution[ ansible_facts['distribution'] ] }}"
+openntpd_ntpd_to_remove: "{{ __openntpd_ntpd_to_remove_by_distribution[ ansible_facts['distribution'] ] }}"
+openntpd_conf_dir: "{{ __openntpd_conf_dir_by_distribution[ ansible_facts['distribution'] ] }}"
+openntpd_user: "{{ __openntpd_user_by_distribution[ ansible_facts['distribution'] ] }}"
+openntpd_group: "{{ __openntpd_group_by_distribution[ ansible_facts['distribution'] ] }}"
+openntpd_service_name: "{{ __openntpd_service_name_by_distribution[ ansible_facts['distribution'] ] }}"
+openntpd_bin_name: "{{ __openntpd_bin_name_by_distribution[ ansible_facts['distribution'] ] }}"
+
+__openntpd_pkgs_by_distribution:
+  Debian:
+    - openntpd
+  OpenBSD: []
+
+__openntpd_ntpd_to_remove_by_distribution:
+  Debian:
+    - name: ntp
+      packages:
+        - name: ntp
+  OpenBSD: []
+
+__openntpd_conf_dir_by_distribution:
+  Debian: /etc/openntpd
+  OpenBSD: /etc
+
+__openntpd_user_by_distribution:
+  Debian: ntpd
+  OpenBSD: _ntpd
+
+__openntpd_group_by_distribution:
+  Debian: ntpd
+  OpenBSD: _ntpd
+
+__openntpd_service_name_by_distribution:
+  Debian: openntpd
+  OpenBSD: ntpd
+
+__openntpd_bin_name_by_distribution:
+  Debian: ntpd
+  OpenBSD: ntpd
