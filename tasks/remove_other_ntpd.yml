@@ -3,24 +3,22 @@
 - name: gather data about services
   service_facts:
 
-- name: disable mailer services
+- name: disable ntp services
   service:
-    name: "{{ item.item.name }}"
+    name: "{{ item.name }}"
     state: stopped
     enabled: False
   when: >
-    item.rc == 0
-    and ansible_facts['services'][item + '.service'] is defined
+    ansible_facts['services'][item.name + '.service'] is defined
   loop: "{{ openntpd_ntpd_to_remove }}"
 
-- name: mask mailer services
+- name: mask ntp services
   systemd:
-    name: "{{ item.item.name }}"
+    name: "{{ item.name }}"
     masked: True
   when: >
-    item.rc == 0
-    and ansible_facts['service_mgr'] == 'systemd'
-    and ansible_facts['services'][item + '.service'] is defined
+    ansible_facts['service_mgr'] == 'systemd'
+    and ansible_facts['services'][item.name + '.service'] is defined
   loop: "{{ openntpd_ntpd_to_remove }}"
 
 - include_role:
