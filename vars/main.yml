@@ -24,6 +24,9 @@ __openntpd_ntpd_to_remove_by_distribution:
     - name: ntp
       packages:
         - name: ntp
+    - name: chrony
+      packages:
+        - name: chrony
   OpenBSD: []
 
 __openntpd_conf_dir_by_distribution:
