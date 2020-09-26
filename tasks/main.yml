@@ -1,5 +1,7 @@
 ---
 
+- import_tasks: 'remove_other_ntpd.yml'
+
 - import_tasks: 'pkg.yml'
 
 - import_tasks: 'config.yml'
@@ -7,5 +9,3 @@
 - import_tasks: 'service.yml'
 
 - meta: 'flush_handlers'
-
-- import_tasks: 'remove_other_ntpd.yml'
