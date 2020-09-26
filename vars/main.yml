@@ -3,48 +3,80 @@
 ##############################################################################
 # Variables
 ##############################################################################
-openntpd_pkgs: "{{ __openntpd_pkgs_by_distribution[ ansible_facts['distribution'] ] }}"
-openntpd_ntpd_to_remove: "{{ __openntpd_ntpd_to_remove_by_distribution[ ansible_facts['distribution'] ] }}"
-openntpd_conf_dir: "{{ __openntpd_conf_dir_by_distribution[ ansible_facts['distribution'] ] }}"
-openntpd_user: "{{ __openntpd_user_by_distribution[ ansible_facts['distribution'] ] }}"
-openntpd_group: "{{ __openntpd_group_by_distribution[ ansible_facts['distribution'] ] }}"
-openntpd_service_name: "{{ __openntpd_service_name_by_distribution[ ansible_facts['distribution'] ] }}"
-openntpd_bin_name: "{{ __openntpd_bin_name_by_distribution[ ansible_facts['distribution'] ] }}"
+_openntpd_pkgs: "{{ _openntpd_pkgs_by_os_family[ ansible_facts['os_family'] ] }}"
+_openntpd_ntpd_to_remove: "{{ _openntpd_ntpd_to_remove_by_os_family[ ansible_facts['os_family'] ] }}"
+_openntpd_conf_dir: "{{ _openntpd_conf_dir_by_os_family[ ansible_facts['os_family'] ] }}"
+_openntpd_user: "{{ _openntpd_user_by_os_family[ ansible_facts['os_family'] ] }}"
+_openntpd_group: "{{ _openntpd_group_by_os_family[ ansible_facts['os_family'] ] }}"
+_openntpd_service_name: "{{ _openntpd_service_name_by_os_family[ ansible_facts['os_family'] ] }}"
+_openntpd_bin_name: "{{ _openntpd_bin_name_by_os_family[ ansible_facts['os_family'] ] }}"
+_openntpd_default_pools: "{{ _openntpd_default_pools_by_os_family[ ansible_facts['os_family'] ] }}"
+_openntpd_libtls_enabled: "{{ _openntpd_libtls_enabled_by_os_family[ ansible_facts['os_family'] ] }}"
+_openntpd_root_group: "{{ _openntpd_root_group_by_os_family[ ansible_facts['os_family'] ] }}"
 
 ##############################################################################
 # Distributions' dictionaries
 ##############################################################################
-__openntpd_pkgs_by_distribution:
+_openntpd_root_group_by_os_family:
+  Debian: 'root'
+  OpenBSD: 'wheel'
+
+_openntpd_pkgs_by_os_family:
   Debian:
-    - openntpd
+    - 'openntpd'
   OpenBSD: []
 
-__openntpd_ntpd_to_remove_by_distribution:
+_openntpd_ntpd_to_remove_by_os_family:
   Debian:
-    - name: ntp
+    - name: 'ntp'
       packages:
-        - name: ntp
-    - name: chrony
+        - name: 'ntp'
+    - name: 'chrony'
       packages:
-        - name: chrony
+        - name: 'chrony'
   OpenBSD: []
 
-__openntpd_conf_dir_by_distribution:
-  Debian: /etc/openntpd
-  OpenBSD: /etc
+_openntpd_conf_dir_by_os_family:
+  Debian: '/etc/openntpd'
+  OpenBSD: '/etc'
 
-__openntpd_user_by_distribution:
-  Debian: ntpd
-  OpenBSD: _ntpd
+_openntpd_user_by_os_family:
+  Debian: 'ntpd'
+  OpenBSD: '_ntpd'
 
-__openntpd_group_by_distribution:
-  Debian: ntpd
-  OpenBSD: _ntpd
+_openntpd_group_by_os_family:
+  Debian: 'ntpd'
+  OpenBSD: '_ntpd'
 
-__openntpd_service_name_by_distribution:
-  Debian: openntpd
-  OpenBSD: ntpd
+_openntpd_service_name_by_os_family:
+  Debian: 'openntpd'
+  OpenBSD: 'ntpd'
 
-__openntpd_bin_name_by_distribution:
-  Debian: ntpd
-  OpenBSD: ntpd
+_openntpd_bin_name_by_os_family:
+  Debian: 'ntpd'
+  OpenBSD: 'ntpd'
+
+_openntpd_default_pools_by_os_family:
+  Debian:
+    - type: 'servers'
+      address: '0.debian.pool.ntp.org'
+
+    - type: 'servers'
+      address: '1.debian.pool.ntp.org'
+
+    - type: 'servers'
+      address: '2.debian.pool.ntp.org'
+
+    - type: 'servers'
+      address: '3.debian.pool.ntp.org'
+
+  OpenBSD:
+    - type: 'servers'
+      address: 'pool.ntp.org'
+
+    - type: 'server'
+      address: 'time.cloudflare.com'
+
+_openntpd_libtls_enabled_by_os_family:
+  Debian: 'False'
+  OpenBSD: 'True'

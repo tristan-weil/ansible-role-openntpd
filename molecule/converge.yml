@@ -1,0 +1,16 @@
+---
+
+- hosts: all
+  name: 'Converge'
+  become: True
+
+  tasks:
+    - import_role:
+        name: 'ansible-role-openntpd'
+      vars:
+        openntpd_pools:
+          - type: servers
+            address: 0.debian.pool.ntp.org
+
+          - type: servers
+            address: 1.debian.pool.ntp.org

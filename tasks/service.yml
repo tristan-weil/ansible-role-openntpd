@@ -1,7 +1,7 @@
 ---
 
-- name: add the ntpd service to init and start the service
+- name: 'add the ntpd service to init and start the service'
   service:
-    name: "{{ openntpd_service_name }}"
+    name: "{{ _openntpd_service_name }}"
     enabled: True
-    state: started
+    state: 'started'

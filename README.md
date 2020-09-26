@@ -1,47 +1,79 @@
 # Ansible Role: openntpd
 
-An Ansible Role that installs and configures `OpenNTPD` on Debian and OpenBSD.
+An Ansible Role that installs and configures `OpenNTPD`.
+
+[![Actions Status](https://github.com/tristan-weil/ansible-role-openntpd/workflows/molecule/badge.svg?branch=master)](https://github.com/tristan-weil/ansible-role-openntpd/actions)
 
 ## Role Variables
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
-    openntpd_firewall_config_ipv4_rules: none               # IPv4 firewall rules
-    openntpd_firewall_config_ipv6_rules: none               # IPv6 firewall rules
-    
-If there is a need for OpenNTPD to listen to incoming NTP requests, the firewall rules need to be configured.
+Mandatory variables:
 
-For more information, see http://www.openntpd.org/manual.html
+| Variable      | Description |
+| :------------ | :---------- |
 
-## Dependencies
+Optional variables:
 
-- t18s.fr_pkg
-- t18s.fr_firewall_config
+| Variable      | Default | Description |
+| :------------ | :------ | :---------- |
+| openntpd_listen | []    | a list of IP addresses to listen on |
+| openntpd_sensors | []   | a list of name of sensors (`*` for all) |
+| openntpd_pools | ...     | a list of <*openntpd_pool*> |
+| openntpd_constraints | ... | a list of <*openntpd_constraint*>  (need libtls) |
+
+### <*openntpd_pool*>
+
+An *openntpd_pool* represents a NTP pool address.
+
+Mandatory variables:
+
+| Variable      | Description |
+| :------------ | :---------- |
+| type          | *server / servers*: the type of the pool (*server*: use only the first IP returned by DNS / *servers*: use all IPs) |
+| address       | the IP or hostname |
+
+Optional variables:
+
+| Variable      | Default | Description |
+| :------------ | :------ | :---------- |
+| weight        | 1       | the weight of the pool |
+| trusted       | False   | *True / False*: mark this pool as trusted |
+
+### <*openntpd_constraint*>
+
+An *openntpd_constraint* represents an OpenNTPd constraint.
+
+Mandatory variables:
+
+| Variable      | Description |
+| :------------ | :---------- |
+| type          | *constraint / constraints*: the type of the constraint (*constraint*: use only the first IP returned by DNS / *constraints*: use all IPs) |
+| address       | the IP or hostname |
+
+Optional variables:
+
+| Variable      | Default | Description |
+| :------------ | :------ | :---------- |
 
 ## Example Playbook
 
-    - hosts: webservers
+    - hosts: 'webservers'
       roles:
-        - role: t18s.fr_openntpd
+        - role: 'ansible-role-openntpd'
 
 ## Todo
 
 None.
 
+## Dependencies
+
+See [requirements_galaxy.yml](https://github.com/tristan-weil/ansible-role-openntpd/blob/master/requirements_galaxy.yml)
+
+## Supported platforms
+
+See [meta/main.yml](https://github.com/tristan-weil/ansible-role-openntpd/blob/master/meta/main.yml)
+
 ## License
 
-```
-Copyright (c) 2018, 2019 Tristan Weil <titou@lab.t18s.fr>
-
-Permission to use, copy, modify, and distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-```
+See [LICENSE.md](https://github.com/tristan-weil/ansible-role-openntpd/blob/master/LICENSE.md)

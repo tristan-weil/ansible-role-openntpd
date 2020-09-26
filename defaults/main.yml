@@ -1,4 +1,20 @@
 ---
 
-openntpd_firewall_config_ipv4_rules: none
-openntpd_firewall_config_ipv6_rules: none
+openntpd_listen: []
+
+openntpd_sensors: []
+
+openntpd_pools: "{{ _openntpd_default_pools }}"
+
+openntpd_constraints:
+  # quad9 v4 without DNS
+  - type: 'constraint'
+    address: '9.9.9.9'  # quad9 v4 without DNS
+
+  # quad9 v6 without DNS
+  - type: 'constraint'
+    address: '2620:fe::fe'
+
+  # intentionally not 8.8.8.8
+  - type: 'constraints'
+    address: 'www.google.com'

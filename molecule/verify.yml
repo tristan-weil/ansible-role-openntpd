@@ -1,0 +1,39 @@
+---
+
+- hosts: all
+  name: 'Verify'
+  become: True
+  gather_facts: True
+  vars:
+    __verify_conf_by_os_distribution:
+      Debian: '/etc/openntpd/ntpd.conf'
+      OpenBSD: '/etc/ntpd.conf'
+
+    __verify_service_name_by_os_distribution:
+      Debian: 'openntpd'
+      OpenBSD: 'ntpd'
+
+  tasks:
+    - name: 'Get the content of the configuration file'
+      slurp:
+        path: "{{ __verify_conf_by_os_distribution[ ansible_facts['os_family'] ] }}"
+      register: __verify_slurp
+
+    - name: 'Check the content of the configuration file'
+      assert:
+        that:
+          - __verify_slurp.content | b64decode | regex_search('1.debian.pool.ntp.org')
+
+    - name: 'Check the service is enabled/started'
+      service:
+        name: "{{ __verify_service_name_by_os_distribution[ ansible_facts['os_family'] ] }}"
+        enabled: True
+        state: 'started'
+      register: __verify
+      failed_when: __verify.changed
+
+    - name: 'Check there are some NTP peers valid'
+      shell: |
+        ntpctl -s status | egrep -vq "O/[0-9]+ peers valid"
+      register: __verify_peers
+      failed_when: __verify_peers.rc != 0

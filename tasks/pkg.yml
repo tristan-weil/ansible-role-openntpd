@@ -1,6 +1,6 @@
 ---
 
 - include_role:
-    name: t18s.fr_pkg
+    name: 'ansible-role-pkg'
   vars:
-    pkg_list: "{{ openntpd_pkgs }}"
+    pkg_list: "{{ _openntpd_pkgs }}"
